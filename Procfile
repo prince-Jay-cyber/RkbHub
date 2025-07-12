@@ -1,1 +1,1 @@
-web: gunicorn music.wsgi
+gunicorn music.wsgi
