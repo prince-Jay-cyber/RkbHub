@@ -1,0 +1,36 @@
+{% extends "rkb/base.html" %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-center text-black mb-4">📬 Contact <span class="text-primary">Us</span></h2>
+  <p class="text-center text-black mb-5">Have questions, requests or inquiries? Reach out below.</p>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success text-center">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <form method="post" class="bg-dark p-4 rounded shadow">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label class="form-label text-white">Your Name</label>
+          <input type="text" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Email Address</label>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label text-white">Message</label>
+          <textarea name="message" rows="5" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "rkb/base.html" %}
+{% load static %}
+
+{% block title %}Subscribe - My Music Site{% endblock %}
+
+{% block extra_head %}
+<style>
+  .form-control {
+    background-color: #1c1c2b;
+    color: #fff;
+    border: 1px solid #333;
+  }
+  label {
+    color: #ccc;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5 text-white">
+  <h2 class="mb-4">📩 Subscribe for Updates</h2>
+  <form method="post" class="row g-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="col-12">
+      <button type="submit" class="btn btn-success">Subscribe</button>
+    </div>
+  </form>
+  {% if success %}
+  <div class="alert alert-success mt-4">You have subscribed successfully!</div>
+  {% endif %}
+</div>
+{% endblock %}

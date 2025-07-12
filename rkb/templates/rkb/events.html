@@ -1,0 +1,51 @@
+{% extends "rkb/base.html" %}
+{% load static %}
+
+{% block title %}Events - My Music Site{% endblock %}
+
+{% block extra_head %}
+<style>
+  .event-card {
+    background-color: #1e1e2e;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+  .event-card:hover {
+    transform: scale(1.01);
+  }
+  .event-card img {
+    height: 200px;
+    object-fit: cover;
+    width: 100%;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-black mb-4">🎫 Upcoming Events</h2>
+  <div class="row">
+    {% for event in events %}
+    <div class="col-md-4 mb-4">
+      <div class="card event-card h-100">
+        {% if event.image %}
+        <img src="{{ event.image.url }}" alt="{{ event.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ event.title }}</h5>
+          <p class="card-text">{{ event.date }} @ {{ event.location }}</p>
+          {% if event.description %}
+          <p class="card-text">{{ event.description|truncatewords:20 }}</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No events available at the moment.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

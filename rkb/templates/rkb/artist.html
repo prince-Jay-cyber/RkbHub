@@ -1,0 +1,72 @@
+{% extends "rkb/base.html" %}
+{% load static %}
+
+{% block title %}Artists - My Music Site{% endblock %}
+
+{% block extra_head %}
+<style>
+  body {
+    animation: fadeInUp 1s ease-in-out;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+  }
+  .artist-card {
+    background-color: #1e1e2f;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    text-align: center;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+  .artist-card:hover {
+    transform: scale(1.02);
+  }
+  .artist-card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- 🎤 Meet the Artists -->
+<div class="container py-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-white mb-0">🎤 Meet the Artists</h2>
+    <a href="{% url 'artist_list' %}" class="btn btn-outline-primary btn-sm">View All</a>
+  </div>
+  <div class="row">
+    {% for artist in artists %}
+    <div class="col-md-3 mb-4">
+      <div class="card h-100 shadow-sm text-center">
+        {% if artist.profile_image %}
+        <img src="{{ artist.profile_image.url }}" alt="{{ artist.stage_name }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ artist.stage_name|default:artist.full_name }}</h5>
+          <p class="card-text"><small>Age: {{ artist.age }}</small></p>
+          {% if artist.also_known_as %}
+          <p class="card-text"><small>AKA: {{ artist.also_known_as }}</small></p>
+          {% endif %}
+          <a href="{% url 'artist_detail' artist.id %}" class="btn btn-primary btn-sm mt-2">Read More</a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p class="text-white">No artists found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+{% endblock %}

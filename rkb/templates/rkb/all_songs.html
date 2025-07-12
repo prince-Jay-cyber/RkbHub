@@ -1,0 +1,112 @@
+{% extends "rkb/base.html" %}
+{% load static %}
+
+{% block title %}All Songs - My Music Site{% endblock %}
+
+{% block extra_head %}
+<style>
+  body {
+    animation: fadeInUp 1s ease-in-out;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .song-card {
+    background-color: #1e1e2f;
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .song-card img {
+    height: 180px;
+    object-fit: cover;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="text-songs mb-4">🎵 All Songs</h2>
+  <div class="row">
+    {% for song in songs %}
+    <div class="col-md-3 mb-4">
+      <div class="card song-card h-100">
+        {% if song.cover_art %}
+        <img src="{{ song.cover_art.url }}" class="card-img-top" alt="{{ song.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ song.title }}</h5>
+          <p class="card-text"><small>By {{ song.artist.stage_name }}</small></p>
+
+          <!-- Custom Audio Control -->
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-outline-primary btn-sm play-pause-btn" data-audio-id="audio{{ forloop.counter }}">
+              <i class="fas fa-play"></i>
+            </button>
+            <small class="text-white">Preview</small>
+          </div>
+          <audio id="audio{{ forloop.counter }}" class="d-none">
+            <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+          </audio>
+
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <p>No songs available.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll(".play-pause-btn");
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const audioId = btn.getAttribute("data-audio-id");
+      const audio = document.getElementById(audioId);
+
+      // Pause all other audio elements
+      document.querySelectorAll("audio").forEach(otherAudio => {
+        if (otherAudio !== audio) {
+          otherAudio.pause();
+          otherAudio.currentTime = 0;
+          const otherBtn = document.querySelector(`[data-audio-id="${otherAudio.id}"] i`);
+          if (otherBtn) {
+            otherBtn.classList.remove("fa-pause");
+            otherBtn.classList.add("fa-play");
+          }
+        }
+      });
+
+      // Toggle play/pause
+      if (audio.paused) {
+        audio.play();
+        btn.querySelector("i").classList.remove("fa-play");
+        btn.querySelector("i").classList.add("fa-pause");
+      } else {
+        audio.pause();
+        btn.querySelector("i").classList.remove("fa-pause");
+        btn.querySelector("i").classList.add("fa-play");
+      }
+
+      // Reset button icon when audio ends
+      audio.onended = () => {
+        btn.querySelector("i").classList.remove("fa-pause");
+        btn.querySelector("i").classList.add("fa-play");
+      };
+    });
+  });
+</script>
+
+{% endblock %}
+

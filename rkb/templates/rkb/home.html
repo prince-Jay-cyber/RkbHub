@@ -1,0 +1,687 @@
+{% extends "rkb/base.html" %}
+{% load static %}
+
+{% block title %}Home - Music{% endblock %}
+
+{% block extra_head %}
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<style>
+    body {
+        background-color: #ffffff;
+
+        color: #000000;
+    }
+    h2, h3, h5 {
+        color: #000000;
+    }
+    .hero {
+        background-color: #ccc;
+        height: 400px;
+        position: relative;
+        animation: fadeInUp 1s ease-in-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+        opacity: 0;
+        transform: translateY(20px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+    }
+    .hero-overlay {
+        background: rgba(0, 0, 0, 0.6);
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+    }
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #ff3366;
+        padding-left: 10px;
+        animation: fadeInUp 1s ease-in-out;
+
+    }
+    .card {
+        background-color: #1e1e2f;
+        color: #fff;
+        border: none;
+    }
+    .card img {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .container {
+        animation: fadeInUp 1s ease-in-out;
+
+    }
+
+    .hero {
+        min-height: 60vh;
+        position: relative;
+    }
+    .hero-overlay {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .music-slider-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #111;
+            padding: 15px 0;
+            position: relative;
+    }
+
+        /* Right to Left (default) */
+        .music-slider-text {
+            display: inline-block;
+            white-space: nowrap;
+            animation: slide-left 25s linear infinite;
+            font-size: 1.2rem;
+            color: #fff;
+            padding-left: 100%;
+        }
+
+        /* Left to Right */
+        .music-slider-right {
+            display: inline-block;
+            white-space: nowrap;
+            animation: slide-right 25s linear infinite;
+            font-size: 1.2rem;
+            color: #fff;
+            padding-right: 100%;
+        }
+
+        /* Keyframes for right-to-left */
+        @keyframes slide-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Keyframes for left-to-right */
+        @keyframes slide-right {
+            0% {
+                transform: translateX(-100%);
+            }
+            100% {
+                transform: translateX(100%);
+            }
+        }
+
+
+    .music-slider-container:hover .music-slider-text,
+    .music-slider-container:hover .music-slider-right {
+        animation-play-state: paused;
+    }
+
+    .feature-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.3);
+    }
+
+
+  .footer {
+    background-color: #121220;
+    color: #ccc;
+    font-size: 14px;
+    animation: fadeInUp 1s ease-in-out;
+
+  }
+  .footer a {
+    color: #fff5f5;
+    text-decoration: none;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Left to Right Slider -->
+<div class="music-slider-container" data-aos="fade-up">
+  <div class="music-slider-right">
+    🎤 Support Independent Artists • 🎹 Stream the Best New Sounds • 🌍 Connecting Music to the World • 🎶 Discover the hottest new tracks • 🎧 Join the music revolution • 🚀 Promote your sound globally • 🔥 Explore trending artists • 💿 Music that moves you •
+  </div>
+</div>
+
+<!-- Hero -->
+{% if hero %}
+<div class="hero" style="background-image: url('{{ hero.image.url }}'); background-size: cover; background-position: center;" data-aos="fade-up">
+  <div class="hero-overlay text-center text-white py-5" style="background-color: rgba(0,0,0,0.6);">
+    <h1 class="display-5 fw-bold">{{ hero.title }}</h1>
+    <p class="lead">{{ hero.subtitle }}</p>
+  </div>
+</div>
+{% endif %}
+
+
+
+<!-- Right to Left Slider -->
+<div class="music-slider-container" data-aos="fade-up">
+  <div class="music-slider-text">
+    🎶 Discover the hottest new tracks • 🎧 Join the music revolution • 🚀 Promote your sound globally • 🔥 Explore trending artists • 💿 Music that moves you • 🎤 Support Independent Artists • 🎹 Stream the Best New Sounds • 🌍 Connecting Music to the World • 
+  </div>
+</div>
+
+
+
+<div class="container-fluid pb-5" data-aos="fade-up">
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+            <h2 class="section-title mb-1">Latest Events</h2>
+            <p class=" fst-italic small mb-0">
+                "Stay in the loop. These upcoming events bring artists and fans together — live, loud, and unforgettable."
+            </p>
+            </div>
+            <a href="{% url 'event_list' %}" class="btn btn-sm btn-outline-primary mt-2 mt-md-0">View All</a>
+        </div>
+    </div>
+
+  <div class="swiper eventSwiper">
+    <div class="swiper-wrapper">
+      {% for event in latest_events %}
+      <div class="swiper-slide">
+        <div class="card">
+          <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.title }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text">{{ event.event_date }} - {{ event.location }}</p>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p>No events found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- Latest Songs Section -->
+<div class="container-fluid pb-5" data-aos="fade-up">
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+            <h2 class="section-title mb-1">🎶 Latest Songs</h2>
+            <p class=" fst-italic small mb-0">
+                "Discover the freshest beats and rising voices — tune in, vibe out, and feel the pulse of our music scene."
+            </p>
+            </div>
+            <a href="{% url 'all_songs' %}" class="btn btn-sm btn-outline-primary mt-2 mt-md-0">View All</a>
+        </div>
+    </div>
+
+  <div class="swiper songSwiper">
+    <div class="swiper-wrapper">
+      {% for song in latest_songs %}
+      <div class="swiper-slide">
+        <div class="card shadow-sm h-100">
+          {% if song.cover_art %}
+          <img src="{{ song.cover_art.url }}" class="card-img-top" alt="{{ song.title }}" style="height: 200px; object-fit: cover;">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-truncate">{{ song.title }}</h5>
+            <p class="mb-2 text-white small"><i class="fas fa-user me-1"></i>By: {{ song.artist.stage_name }}</p>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-outline-primary text-white btn-sm play-pause-btn" data-audio-id="audio{{ forloop.counter }}">
+                <i class="fas fa-play"></i>
+              </button>
+              <small class="text-white">Preview</small>
+            </div>
+            <audio id="audio{{ forloop.counter }}" class="d-none">
+              <source src="{{ song.audio_file.url }}" type="audio/mpeg">
+            </audio>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p>No songs found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container-fluid pb-5" data-aos="fade-up">
+    <div class="mb-4">
+        <div class="d-flex justify-content-between align-items-center flex-wrap">
+            <div>
+            <h2 class="section-title mb-1">Latest Posts</h2>
+            <p class=" fst-italic small mb-0">
+                "Explore stories, insights, and inspiration from our creative community. Catch up on what matters most."
+            </p>
+            </div>
+            <a href="{% url 'blog_list' %}" class="btn btn-sm btn-outline-primary mt-2 mt-md-0">View All</a>
+        </div>
+    </div>
+
+  <div class="swiper blogSwiper">
+    <div class="swiper-wrapper">
+      {% for post in latest_blogs %}
+      <div class="swiper-slide">
+        <div class="card h-100">
+          {% if post.image %}
+          <img src="{{ post.image.url }}" class="card-img-top" alt="{{ post.title }}">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ post.title }}</h5>
+            <p class="card-text">{{ post.description|truncatewords:20 }}</p>
+            <p class="text-primary">{{ post.tags }}</p>
+            <small class="text-white">{{ post.date_posted }}</small>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p>No post found.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid pb-5">
+  <h2 class="text-black mb-4">🎤 Featured Artists</h2>
+  
+  <div class="swiper swiper-artists">
+    <div class="swiper-wrapper">
+      {% for artist in artists %}
+      <div class="swiper-slide">
+        <div class="text-center">
+          {% if artist.profile_image %}
+          <img src="{{ artist.profile_image.url }}" class="rounded-circle shadow mb-2"
+               alt="{{ artist.stage_name }}" style="width: 80px; height: 80px; object-fit: cover;">
+          {% else %}
+          <div class="rounded-circle bg-secondary mb-2 d-inline-block" style="width: 80px; height: 80px;"></div>
+          {% endif %}
+          <h6 class="mb-1">{{ artist.stage_name|default:artist.full_name }}</h6>
+          <small class="text-muted">{{ artist.genre }}</small>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+
+
+
+<!-- About Us -->
+<div class="container-fluid pb-5" data-aos="fade-up">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      {% if site_settings.logo %}
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}"  class="img-fluid" width="80">
+                <br>
+            </a>
+            {% else %}
+            <a class="navbar-brand fw-bold" href="/">{{ site_settings.site_name }}</a>
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+      <h2 class="fw-bold mb-3">About <span class="text-primary">Our Platform</span></h2>
+      <p>
+        Welcome to <strong>{{ site_settings.site_name }}</strong>, your number one hub for discovering new music, connecting with rising artists, and staying updated with the latest events in the industry.
+        Whether you're a fan, an artist, or a promoter — our goal is to amplify the music culture.
+      </p>
+      <p class="text-primary bold">
+        <i>
+            "We focus on quality uploads, promotional opportunities, and a powerful admin dashboard to ensure the best experience for everyone."
+        </i>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<!-- Top Albums and Latest Videos -->
+<div class="container-fluid pb-5">
+  <div class="row g-4" data-aos="fade-up">
+
+    <!-- Top Albums -->
+    <div class="col-md-6" data-aos="fade-right">
+      <h3 class="mb-4 text-white fw-bold">Top <span class="text-primary">Albums</span></h3>
+      <table class="table table-dark table-hover table-borderless align-middle">
+        <thead>
+          <tr class="text-secondary">
+            <th scope="col">#</th>
+            <th scope="col">Album/Artist</th>
+            <th scope="col">Genre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for album in top_albums %}
+          <tr>
+            <td>{{ forloop.counter|add:"0"|slice:"-2" }}</td>
+            <td>
+              <div class="d-flex align-items-center">
+                {% if album.cover_art %}
+                <img src="{{ album.cover_art.url }}" alt="{{ album.title }}" width="40" height="40" class="me-3 rounded shadow-sm object-fit-cover">
+                {% endif %}
+                <div class="d-flex flex-column">
+                  <strong class="text-white mb-0 text-truncate">{{ album.title }}</strong>
+                  <small class="text-white text-truncate">{{ album.artist.stage_name }}</small>
+                </div>
+              </div>
+            </td>
+            <td>
+              {% if album.genre %}
+              <span class="badge bg-primary">{{ album.genre }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" class="text-white">No albums found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Latest Videos -->
+    <div class="col-md-6" data-aos="fade-left">
+      <h3 class="mb-4 fw-bold text-white">Latest <span class="text-primary">Videos</span></h3>
+
+      <!-- Swiper Container -->
+      <div class="swiper videoSwiper">
+        <div class="swiper-wrapper">
+          {% for video in latest_videos %}
+          <div class="swiper-slide">
+            <div class="card border-0 bg-dark text-white shadow-sm h-100">
+              <div class="ratio ratio-1x1">
+                <img src="{{ video.thumbnail.url }}" alt="{{ video.title }}" class="rounded-top w-100 h-100 object-fit-cover">
+              </div>
+              <div class="card-body px-2">
+                <h6 class="card-title text-truncate">{{ video.title }}</h6>
+                <small>{{ video.artist_name }}</small>
+                <p class="small">{{ video.uploaded_at }}</p>
+                <p><i>Video Link: </i><a href="{{ video.video_url }}" target="_blank" class="text-primary">{{ video.video_url }}</a></p>
+              </div>
+            </div>
+          </div>
+          {% empty %}
+          <div class="swiper-slide">
+            <div class="card bg-dark text-white p-3 text-center">
+              <p class="mb-0">No videos found.</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- 🌐 Follow Us Section -->
+<div class="container-fluid text-center py-5" data-aos="fade-up">
+  <h3 class="mb-4 fw-bold">Follow Us On Social Media</h3>
+  <div class="d-flex justify-content-center gap-4">
+    <a href="https://www.facebook.com/share/19BzqQNqM8/?mibextid=wwXIfr" target="_blank" class="text-primary fs-3">
+      <i class="fab fa-facebook"></i>
+    </a>
+    <a href="https://www.instagram.com/cashizzdetrapstar?igsh=NjVra3U3b3hiaHdh&utm_source=qr" target="_blank" class="text-danger fs-3">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="https://www.tiktok.com/@rkbhub?_t=ZM-8xxdQMkW18a&_r=1" target="_blank" class="text-dark fs-3">
+      <i class="fab fa-tiktok"></i>
+    </a>
+    <a href="https://www.snapchat.com/add/raynolfbredu?share_id=mZibg9e6RoOLJ9ZHxX9Q9w&locale=en_GH" target="_blank" class="text-warning fs-3">
+      <i class="fab fa-snapchat"></i>
+    </a>
+    <a href="http://wa.me/233535088009" target="_blank" class="text-success fs-3">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+  </div>
+</div>
+
+
+<!-- Platform Features -->
+<!-- Platform Features -->
+<div class="container-fluid pb-5" data-aos="fade-up">
+  <h2 class="fw-bold  mb-5 text-center display-5">
+    Why Use <span class="text-primary">{{ site_settings.site_name }}</span>?
+  </h2>
+
+  <div class="row g-4">
+    <!-- Feature 1 -->
+    <div class="col-md-4">
+      <div class="card bg-gradient bg-dark border-0 shadow h-100 feature-card">
+        <div class="card-body text-center">
+          <div class="mb-3">
+            <i class="fas fa-music fa-2x text-primary"></i>
+          </div>
+          <h5 class="card-title text-white">Upload & Promote Music</h5>
+          <p class="card-text text-light small">
+            Artists can submit tracks for review and get promoted directly on our homepage, events, and featured lists.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="col-md-4">
+      <div class="card bg-gradient bg-dark border-0 shadow h-100 feature-card">
+        <div class="card-body text-center">
+          <div class="mb-3">
+            <i class="fas fa-bullhorn fa-2x text-primary"></i>
+          </div>
+          <h5 class="card-title text-white">Advertise & Boost</h5>
+          <p class="card-text text-light small">
+            Promoters can showcase their brand, events, or music through our ad placements and featured banners.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feature 3 -->
+    <div class="col-md-4">
+      <div class="card bg-gradient bg-dark border-0 shadow h-100 feature-card">
+        <div class="card-body text-center">
+          <div class="mb-3">
+            <i class="fas fa-star fa-2x text-primary"></i>
+          </div>
+          <h5 class="card-title text-white">Discover Rising Stars</h5>
+          <p class="card-text text-light small">
+            Our platform helps users find new artists, top tracks, and upcoming events curated by genre and trends.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action Button -->
+  <div class="text-center mt-5">
+    <a href="/submit-song/" class="btn btn-lg btn-primary px-4 py-2 fw-semibold shadow">
+      <i class="fas fa-upload me-2"></i> Add Your Track
+    </a>
+  </div>
+</div>
+
+
+
+<!-- FAQ Section -->
+<div class="container-fluid pb-5" data-aos="fade-up">
+  <h2 class="text-center mb-4">Frequently Asked <span class="text-primary">Questions</span></h2>
+  <div class="accordion" id="faqAccordion">
+    
+    <!-- FAQ 1 -->
+    <div class="accordion-item bg-dark border-0 text-white">
+      <h2 class="accordion-header" id="faqHeadingOne">
+        <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseOne">
+          How do I submit my music?
+        </button>
+      </h2>
+      <div id="faqCollapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body text-white">
+          Simply go to the “Submit Song” section, fill out the form, and upload your track. Once approved by the admin, it’ll appear live on the site.
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="accordion-item bg-dark border-0 text-white">
+      <h2 class="accordion-header" id="faqHeadingTwo">
+        <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseTwo">
+          Is there a cost to upload music?
+        </button>
+      </h2>
+      <div id="faqCollapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body text-white">
+          No, it's free to upload. However, for featured listings and ad promotion, we offer premium plans.
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="accordion-item bg-dark border-0 text-white">
+      <h2 class="accordion-header" id="faqHeadingThree">
+        <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseThree">
+          How do I promote an event or ad?
+        </button>
+      </h2>
+      <div id="faqCollapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body text-white">
+          You can contact the admin through the “Submit” section or email. Once verified, your ad or event will be featured on the homepage.
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="accordion-item bg-dark border-0 text-white">
+      <h2 class="accordion-header" id="faqHeadingFour">
+        <button class="accordion-button collapsed bg-dark text-white" type="button" data-bs-toggle="collapse" data-bs-target="#faqCollapseFour">
+          How can I get featured on the homepage?
+        </button>
+      </h2>
+      <div id="faqCollapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+        <div class="accordion-body text-white">
+          Admins select featured songs and artists based on quality and engagement. Submit your best track with proper details and artwork.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<!-- Footer -->
+<footer class="container-fluid pb-5 text-center text-lg-start text-white bg-dark py-5" data-aos="fade-up">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      <!-- Useful Links -->
+      <div class="col-md-4 mb-4">
+        <h5 class="text-uppercase text-white fw-bold">Useful Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="/" class="text-white text-decoration-none d-block py-1">Home</a></li>
+          <li><a href="/songs/" class="text-white text-decoration-none d-block py-1">Songs</a></li>
+          <li><a href="/artists/" class="text-white text-decoration-none d-block py-1">Artists</a></li>
+        </ul>
+      </div>
+
+      <!-- Logo or Site Name -->
+      <div class="col-md-4 mb-4 d-flex flex-column align-items-center justify-content-center">
+        {% if site_settings.logo %}
+          <a class="navbar-brand d-flex align-items-center mb-2" href="/">
+            <img src="{{ site_settings.logo.url }}" alt="Logo" class="me-2" style="height: 40px;">
+            <span class="fw-bold fs-5 text-white">{{ site_settings.site_name }}</span>
+          </a>
+        {% else %}
+          <a class="navbar-brand fw-bold fs-5 text-white mb-2" href="/">{{ site_settings.site_name }}</a>
+        {% endif %}
+        <p class="text-secondary small">Bringing music to life.</p>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="text-uppercase text-white fw-bold">Contact Us</h5>
+        <p class="mb-1">Email: <a href="mailto:rkbhub0@gmail.com" class="text-white text-decoration-none">rkbhub0@gmail.com</a></p>
+        <p>Phone: <a href="tel:+233257698467" class="text-white text-decoration-none">+233 25 769 8467</a></p>
+      </div>
+    </div>
+
+    <hr class="border-secondary my-4">
+
+    <!-- Copyright -->
+    <div class="text-center">
+      <p class="text-white mb-0 small">&copy; {{ now|date:"Y" }} RKB HUB Site. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68721331cbb343319286fae3/1ivuplujl';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->
+<script>
+  const playButtons = document.querySelectorAll(".play-pause-btn");
+  let currentAudio = null;
+
+  playButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const audioId = btn.getAttribute("data-audio-id");
+      const audio = document.getElementById(audioId);
+      const icon = btn.querySelector("i");
+
+      // Pause other audio
+      if (currentAudio && currentAudio !== audio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        const allIcons = document.querySelectorAll(".play-pause-btn i");
+        allIcons.forEach(ic => ic.className = "fas fa-play");
+      }
+
+      if (audio.paused) {
+        audio.play();
+        icon.className = "fas fa-pause";
+        currentAudio = audio;
+      } else {
+        audio.pause();
+        icon.className = "fas fa-play";
+      }
+
+      // Reset icon when audio ends
+      audio.onended = () => {
+        icon.className = "fas fa-play";
+      };
+    });
+  });
+</script>
+
+
+
+{% endblock %}

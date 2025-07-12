@@ -1,0 +1,172 @@
+<!-- rkb/templates/rkb/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}RkB_HUB Site{% endblock %}</title>
+    <link rel="icon" href="{{ site_settings.logo.url }}" type="image/x-icon">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    {% block extra_head %}{% endblock %}
+    <!-- Custom CSS -->
+    <style>
+        .navbar-brand img {
+            min-height: 100px;
+            width: auto;
+            background-color: rgb(104, 104, 104);
+            box-shadow: 2px 2px 5px rgba(112, 112, 112, 0.575);
+            border-radius: 50%;
+            transform: ease-in-out 0.3s;
+        }
+
+        .navbar-brand img:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ff3366;
+            border-bottom: 2px solid #ff3366;
+        }
+        .swiper {
+            padding-bottom: 10px;
+        }
+        .swiper-slide {
+            width: auto;
+            max-width: 300px;
+        }
+
+    </style>
+</head>
+<body >
+
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
+        <div class="container">
+            <!-- Logo or Site Name -->
+            {% if site_settings.logo %}
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="{{ site_settings.logo.url }}" alt="{{ site_settings.site_name }}" width="60px" height="60px">
+                <br>
+            </a>
+            {% else %}
+            <a class="navbar-brand fw-bold" href="/">{{ site_settings.site_name }}</a>
+            {% endif %}
+
+            <!-- Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Nav Links -->
+            <div class="collapse navbar-collapse" id="navbarContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/songs/"><i class="fas fa-music me-1"></i>Songs</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/artists/"><i class="fas fa-users me-1"></i>Artists</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/blog/"><i class="fas fa-blog me-1"></i>Blog</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/event/"><i class="fas fa-calendar-alt me-1"></i>Events</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="/submit-song/"><i class="fas fa-upload me-1"></i>Submit Song</a>
+                </li>
+            </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+    <script>
+        AOS.init({
+            duration: 800, // animation duration in ms
+            once: true,     // animate only once
+        });
+        new Swiper(".eventSwiper", {
+            slidesPerView: 1.2,
+            spaceBetween: 16,
+            breakpoints: {
+            576: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            992: { slidesPerView: 4 }
+            }
+        });
+
+        new Swiper(".songSwiper", {
+            slidesPerView: 1.2,
+            spaceBetween: 16,
+            breakpoints: {
+            576: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1200: { slidesPerView: 4 }
+            }
+        });
+
+        new Swiper(".blogSwiper", {
+            slidesPerView: 1.2,
+            spaceBetween: 16,
+            breakpoints: {
+            576: { slidesPerView: 2 },
+            768: { slidesPerView: 3 },
+            1200: { slidesPerView: 4 }
+            }
+        });
+
+        new Swiper(".videoSwiper", {
+            slidesPerView: 1.2,
+            spaceBetween: 16,
+            grabCursor: true,
+            breakpoints: {
+            576: { slidesPerView: 2 },
+            768: { slidesPerView: 2.5 },
+            992: { slidesPerView: 3 },
+            }
+        });
+
+        new Swiper('.swiper-artists', {
+            slidesPerView: 2,
+            spaceBetween: 15,
+            loop: true,
+            autoplay: { delay: 3000 },
+            breakpoints: {
+            576: { slidesPerView: 3 },
+            768: { slidesPerView: 4 },
+            992: { slidesPerView: 5 },
+            }
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

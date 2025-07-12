@@ -1,0 +1,106 @@
+{% extends "rkb/base.html" %}
+{% load static %}
+
+{% block title %}Submit Your Song{% endblock %}
+
+{% block extra_head %}
+<style>
+  body {
+    /* background-color: #12121c; */
+    color: #000000;
+    animation: fadeInUp 1s ease-in-out;
+  }
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  form {
+    margin-top: 2rem;
+  }
+
+  label {
+    margin-bottom: 0.25rem;
+    display: block;
+  }
+
+  .form-control {
+    background-color: #1f1f2e;
+    border: 1px solid #333;
+  }
+
+  .form-control::placeholder {
+    color: #888;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-primary {
+    background-color: #4e5dff;
+    border: none;
+  }
+
+  .btn-primary:hover {
+    background-color: #3b47cc;
+  }
+
+  .alert-success {
+    background-color: #2e7d32;
+    border: none;
+  }
+
+  .row > .col-md-4 {
+    margin-bottom: 1rem;
+  }
+
+  @media (max-width: 767px) {
+    .row > .col-md-4 {
+      width: 100%;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="py-5">
+  <h2>📤 Submit Your Song</h2>
+
+  <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="row">
+      {% for field in form %}
+        <div class="col-md-4 form-group">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.errors %}
+            <div class="text-danger small mt-1">{{ field.errors }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-4">
+      <button type="submit" class="btn btn-primary px-4">Submit</button>
+    </div>
+
+    {% if success %}
+      <div class="alert alert-success mt-4 text-center">
+        🎉 Thank you! Your song has been submitted for review.
+      </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}
